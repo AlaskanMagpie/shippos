@@ -117,9 +117,9 @@
   #hud-top {
     position: fixed;
     top: 0; left: 0; right: 0;
-    padding: 20px 240px 20px 240px;
+    padding: 18px 24px 0 240px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     pointer-events: none;
     z-index: 15;
   }
@@ -140,34 +140,62 @@
     transition: all 0.5s;
   }
   
-  #stats-panel { text-align: right; }
+  #stats-panel {
+    text-align: left;
+    position: fixed;
+    right: 54px;
+    top: 152px;
+    min-width: 140px;
+    padding: 12px 16px 18px;
+    background: rgba(8,16,24,0.68);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 18px;
+    backdrop-filter: blur(10px);
+  }
+  #stats-panel::after {
+    content: '';
+    position: absolute;
+    left: 18px;
+    bottom: -42px;
+    width: 120px;
+    height: 42px;
+    border-left: 1px solid rgba(110,150,170,0.45);
+    border-bottom: 1px solid rgba(110,150,170,0.45);
+    border-bottom-left-radius: 28px;
+    transform: skewX(-30deg);
+    opacity: 0.75;
+  }
   
   .stat-row {
     font-size: 9px;
     letter-spacing: 1px;
     color: #3a5a6a;
     margin-bottom: 1px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
   }
   
   .stat-row span { transition: color 0.5s; }
   
   #info-bar {
     position: fixed;
-    bottom: 0; left: 0; right: 0;
-    padding: 14px 22px 16px 240px;
-    background: linear-gradient(180deg, rgba(4,8,16,0.55), rgba(4,8,16,0.88));
-    border-top: 1px solid rgba(255,255,255,0.05);
+    left: 240px;
+    bottom: 18px;
+    width: min(760px, calc(100vw - 340px));
+    padding: 0;
+    background: transparent;
+    border-top: none;
     display: grid;
-    grid-template-columns: minmax(200px, 320px) minmax(300px, 1fr) minmax(210px, 260px);
-    gap: 14px;
+    grid-template-columns: minmax(220px, 300px) auto;
+    gap: 12px;
     align-items: end;
     z-index: 15;
-    backdrop-filter: blur(10px);
+    backdrop-filter: none;
   }
   
   #desc-text,
-  #control-groups,
-  #credits-notice {
+  #control-groups {
     background: rgba(8,16,24,0.72);
     border: 1px solid rgba(255,255,255,0.05);
     border-radius: 18px;
@@ -187,6 +215,7 @@
     display: grid;
     gap: 8px;
     padding: 12px 14px;
+    width: fit-content;
   }
 
   .control-group {
@@ -204,9 +233,23 @@
     color: #526a78;
   }
 
+  .control-note {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.025);
+    color: #6a818e;
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+
   #view-controls,
   #frame-controls,
-  #tool-controls { display: flex; gap: 6px; flex-wrap: wrap; }
+  #tool-controls,
+  #paint-controls { display: flex; gap: 6px; flex-wrap: wrap; }
   
   .v-btn {
     background: rgba(255,255,255,0.03);
@@ -226,14 +269,21 @@
   .v-btn.active { border-color: var(--ui-accent); color: var(--ui-accent); background: rgba(var(--ui-accent-rgb),0.08); }
 
   #credits-notice {
-    position: relative;
-    max-width: none;
-    padding: 12px 30px 12px 14px;
+    position: fixed;
+    top: 76px;
+    left: 240px;
+    max-width: 360px;
+    padding: 14px 32px 14px 14px;
     font-size: 9px;
     line-height: 1.45;
     letter-spacing: 0.5px;
     color: #5a7080;
     transition: opacity 0.25s, transform 0.25s;
+    background: rgba(8,16,24,0.84);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 18px;
+    box-shadow: 0 10px 34px rgba(0,0,0,0.22);
+    z-index: 17;
   }
   #credits-notice.hidden { display: none; }
   #credits-notice a { color: #6a90a0; text-decoration: none; }
@@ -286,13 +336,28 @@
     #hud-top {
       padding: calc(14px + env(safe-area-inset-top, 0px)) 14px 0;
       gap: 14px;
+      justify-content: space-between;
     }
 
+    #stats-panel {
+      position: static;
+      min-width: 110px;
+      padding: 10px 12px;
+    }
+    #stats-panel::after { display: none; }
+
     #info-bar {
+      left: 14px;
+      right: 14px;
+      width: auto;
       padding: 12px 14px calc(14px + env(safe-area-inset-bottom, 0px));
       grid-template-columns: 1fr;
       align-items: stretch;
       gap: 10px;
+    }
+
+    #control-groups {
+      width: auto;
     }
 
     #desc-text {
@@ -313,11 +378,16 @@
 
     #view-controls,
     #frame-controls,
-    #tool-controls {
+    #tool-controls,
+    #paint-controls {
       justify-content: center;
     }
 
     #credits-notice {
+      top: 18px;
+      left: auto;
+      right: 14px;
+      max-width: 280px;
       font-size: 8px;
       line-height: 1.4;
     }
@@ -365,7 +435,8 @@
     }
 
     #frame-controls,
-    #tool-controls {
+    #tool-controls,
+    #paint-controls {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -379,6 +450,14 @@
 
     #desc-text {
       display: none;
+    }
+
+    #credits-notice {
+      top: auto;
+      left: 12px;
+      right: 12px;
+      bottom: calc(168px + env(safe-area-inset-bottom, 0px));
+      max-width: none;
     }
   }
 </style>
@@ -435,6 +514,12 @@
   </div>
 </div>
 
+<div id="credits-notice">
+  <button class="close-btn" onclick="dismissCreditsNotice()" aria-label="Close">×</button>
+  <span class="notice-label">PROJECT NOTE</span>
+  These ships are for a game I'm making. Builder tools, uploads, and more ship/content drops are coming soon. Like them? Download the GLB below and tag me in your build on X.
+</div>
+
 <div id="info-bar">
   <div id="desc-text">Multi-role vessel optimized for extended deep-space operations. Combines exploration, scientific research, and field construction capabilities in a single hull.</div>
   <div id="control-groups">
@@ -451,9 +536,17 @@
     <div class="control-group">
       <div class="control-label">FRAME</div>
       <div id="frame-controls">
-        <button class="v-btn active" data-frame="auto" onclick="setFrameMode('auto',this)">AUTO</button>
-        <button class="v-btn" data-frame="horizontal" onclick="setFrameMode('horizontal',this)">H-FRAME</button>
-        <button class="v-btn" data-frame="vertical" onclick="setFrameMode('vertical',this)">V-FRAME</button>
+        <div class="control-note">AUTO CENTER</div>
+        <button class="v-btn" data-invert="h" onclick="toggleInvert('horizontal',this)">INV-H</button>
+        <button class="v-btn" data-invert="v" onclick="toggleInvert('vertical',this)">INV-V</button>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="control-label">PAINT</div>
+      <div id="paint-controls">
+        <button class="v-btn active" data-paint="0" onclick="setPaintMode(0,this)">BASE</button>
+        <button class="v-btn" data-paint="1" onclick="setPaintMode(1,this)">ALT-1</button>
+        <button class="v-btn" data-paint="2" onclick="setPaintMode(2,this)">ALT-2</button>
       </div>
     </div>
     <div class="control-group">
@@ -463,11 +556,6 @@
         <button class="v-btn" onclick="exportGLB()">GLB ↓</button>
       </div>
     </div>
-  </div>
-  <div id="credits-notice">
-    <button class="close-btn" onclick="dismissCreditsNotice()" aria-label="Close">×</button>
-    <span class="notice-label">PROJECT NOTE</span>
-    These ships are for a game I'm making. Like them? Download the GLB below and tag me in your build on X! Your own ship uploads and a builder are being looked into.
   </div>
 </div>
 
@@ -483,7 +571,8 @@ let isDragging = false, lastM = {x:0,y:0}, lastPinch = null;
 let isWire = false;
 let autoOrbit = true;
 let currentView = 'orbit';
-let cameraFrameMode = 'auto';
+let paintMode = 0;
+let invertHorizontal = false, invertVertical = false;
 let shipYaw = 0, shipPitch = 0, shipRoll = 0;
 let targetYaw = 0, targetPitch = 0, targetRoll = 0;
 let lookTarget = new THREE.Vector3();
@@ -495,19 +584,24 @@ let engineThrust = 1.0, targetThrust = 1.0;
 const SHIPS_META = [
   { name:'PATHFINDER', subtitle:'DEEP-RANGE EXPLORATION SCIENCE VESSEL', accent:0x4af0c0, accentCSS:'#4af0c0',
     len:'287m', beam:'94m', mass:'1.2M t', crew:'340', drive:'4x Fusion',
-    desc:'Multi-role vessel optimized for extended deep-space operations. Combines exploration, scientific research, and field construction capabilities in a single hull.', dist:38 },
+    desc:'Multi-role vessel optimized for extended deep-space operations. Combines exploration, scientific research, and field construction capabilities in a single hull.', dist:38,
+    paintThemes:[{name:'BASE',accent:0x4af0c0,accentCSS:'#4af0c0',shift:0,sat:1,light:1},{name:'EMBER',accent:0xff9c6a,accentCSS:'#ff9c6a',shift:0.06,sat:1.15,light:1.02},{name:'LILAC',accent:0xb693ff,accentCSS:'#b693ff',shift:0.17,sat:0.9,light:1.06}] },
   { name:'IRONWORKS', subtitle:'HEAVY INDUSTRIAL CONSTRUCTION VESSEL', accent:0xf0a040, accentCSS:'#f0a040',
     len:'412m', beam:'188m', mass:'4.8M t', crew:'580', drive:'6x Fusion + Ion',
-    desc:'Purpose-built for megastructure fabrication and asteroid processing. Twin gantry cranes, central smelter forge, and 200-unit construction drone swarm bay.', dist:48 },
+    desc:'Purpose-built for megastructure fabrication and asteroid processing. Twin gantry cranes, central smelter forge, and 200-unit construction drone swarm bay.', dist:48,
+    paintThemes:[{name:'BASE',accent:0xf0a040,accentCSS:'#f0a040',shift:0,sat:1,light:1},{name:'OXIDE',accent:0xff6e58,accentCSS:'#ff6e58',shift:-0.03,sat:1.12,light:0.98},{name:'BRASS',accent:0xf4d06f,accentCSS:'#f4d06f',shift:0.02,sat:0.95,light:1.08}] },
   { name:'TESSERA', subtitle:'ORBITAL RESEARCH STATION VESSEL', accent:0xa080ff, accentCSS:'#a080ff',
     len:'195m', beam:'142m', mass:'860K t', crew:'210', drive:'2x Fusion',
-    desc:'Long-duration research platform with rotating habitat ring for artificial gravity. Zero-g crystallography labs, xenobiology containment, and retractable observatory dome.', dist:42 },
+    desc:'Long-duration research platform with rotating habitat ring for artificial gravity. Zero-g crystallography labs, xenobiology containment, and retractable observatory dome.', dist:42,
+    paintThemes:[{name:'BASE',accent:0xa080ff,accentCSS:'#a080ff',shift:0,sat:1,light:1},{name:'AQUA',accent:0x62d8ff,accentCSS:'#62d8ff',shift:0.11,sat:1.08,light:1.05},{name:'ROSE',accent:0xff9dc9,accentCSS:'#ff9dc9',shift:-0.08,sat:0.92,light:1.08}] },
   { name:'OUTRIDER', subtitle:'FAST RECONNAISSANCE STRIKE VESSEL', accent:0xff5070, accentCSS:'#ff5070',
     len:'148m', beam:'65m', mass:'320K t', crew:'45', drive:'1x AM + 1x Fusion',
-    desc:'Asymmetric axe-profile hull with spine-mounted railgun. Oversized starboard main drive for pursuit speed, smaller port thruster for maneuvering. Low crew, maximum firepower and range.', dist:32 },
+    desc:'Asymmetric axe-profile hull with spine-mounted railgun. Oversized starboard main drive for pursuit speed, smaller port thruster for maneuvering. Low crew, maximum firepower and range.', dist:32,
+    paintThemes:[{name:'BASE',accent:0xff5070,accentCSS:'#ff5070',shift:0,sat:1,light:1},{name:'STEALTH',accent:0x6fd3ff,accentCSS:'#6fd3ff',shift:0.14,sat:0.72,light:0.9},{name:'SUNSTRIKE',accent:0xffb34d,accentCSS:'#ffb34d',shift:0.05,sat:1.2,light:1.02}] },
   { name:'MULE', subtitle:'AUTOMATED BULK CARGO FREIGHTER', accent:0x80e060, accentCSS:'#80e060',
     len:'65–140m', beam:'18–32m', mass:'80–300K t', crew:'0 (AI)', drive:'1–2x Ion',
-    desc:'Autonomous freighter in 3 variants. SPRINT: fast 2x3 short-body courier. LONGHAULER: extended spine with 4x4 container stack. TANKER: cylindrical fuel/gas tanks for bulk liquid transport. All optimized for mass instancing.', dist:22 },
+    desc:'Autonomous freighter in 3 variants. SPRINT: fast 2x3 short-body courier. LONGHAULER: extended spine with 4x4 container stack. TANKER: cylindrical fuel/gas tanks for bulk liquid transport. All optimized for mass instancing.', dist:22,
+    paintThemes:[{name:'BASE',accent:0x80e060,accentCSS:'#80e060',shift:0,sat:1,light:1},{name:'HAZARD',accent:0xffc64a,accentCSS:'#ffc64a',shift:0.06,sat:1.18,light:1.03},{name:'GLACIER',accent:0x8de8ff,accentCSS:'#8de8ff',shift:0.16,sat:0.9,light:1.08}] },
 ];
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
 function isCompactLayout(){return window.matchMedia('(max-width: 640px), (orientation: portrait)').matches;}
@@ -522,6 +616,53 @@ function dismissCreditsNotice(){
   notice.classList.add('hidden');
   try{sessionStorage.setItem('shippos-credits-closed','1');}catch(e){}
   updateLayoutLookTarget();
+}
+function syncInvertButtons(){
+  document.querySelectorAll('[data-invert]').forEach(b=>{
+    const isActive=(b.dataset.invert==='h'&&invertHorizontal)||(b.dataset.invert==='v'&&invertVertical);
+    b.classList.toggle('active',isActive);
+  });
+}
+function toggleInvert(axis,btn){
+  if(axis==='horizontal'){
+    invertHorizontal=!invertHorizontal;
+    try{localStorage.setItem('shippos-invert-horizontal', invertHorizontal?'1':'0');}catch(e){}
+  }else{
+    invertVertical=!invertVertical;
+    try{localStorage.setItem('shippos-invert-vertical', invertVertical?'1':'0');}catch(e){}
+  }
+  syncInvertButtons();
+}
+function tintColor(hex,theme){
+  const color=new THREE.Color(hex);
+  const hsl={h:0,s:0,l:0};
+  color.getHSL(hsl);
+  color.setHSL((hsl.h+(theme.shift||0)+1)%1,clamp(hsl.s*(theme.sat||1),0,1),clamp(hsl.l*(theme.light||1),0,1));
+  return color;
+}
+function applyPaintTheme(){
+  if(!currentShipGroup) return;
+  const shipMeta=SHIPS_META[currentShipIdx];
+  const theme=shipMeta.paintThemes[paintMode]||shipMeta.paintThemes[0];
+  document.documentElement.style.setProperty('--ui-accent', theme.accentCSS);
+  document.documentElement.style.setProperty('--ui-accent-rgb', `${(theme.accent>>16)&255},${(theme.accent>>8)&255},${theme.accent&255}`);
+  document.getElementById('vessel-title').style.color=theme.accentCSS;
+  document.querySelectorAll('.stat-row span').forEach(sp=>sp.style.color=theme.accentCSS);
+  currentShipGroup.traverse(c=>{
+    if(!c.isMesh||!c.material) return;
+    const mats=Array.isArray(c.material)?c.material:[c.material];
+    mats.forEach(mat=>{
+      if(!mat.color) return;
+      if(!mat.userData.baseColor) mat.userData.baseColor=mat.color.getHex();
+      const tinted=tintColor(mat.userData.baseColor,theme);
+      mat.color.copy(tinted);
+      if(mat.emissive){
+        if(!mat.userData.baseEmissive) mat.userData.baseEmissive=mat.emissive.getHex();
+        mat.emissive.copy(tintColor(mat.userData.baseEmissive,theme));
+      }
+    });
+  });
+  document.querySelectorAll('[data-paint]').forEach(b=>b.classList.toggle('active',Number(b.dataset.paint)===paintMode));
 }
 function updateLayoutLookTarget(){
   if(!camera)return;
@@ -546,19 +687,16 @@ function updateLayoutLookTarget(){
     desiredY=bottomBound>topBound?(topBound+bottomBound)*0.5:vh*0.54;
   }
 
-  if(cameraFrameMode==='horizontal') desiredY=vh*0.5;
-  if(cameraFrameMode==='vertical') desiredX=vw*0.5;
-
   const normX=clamp((desiredX-vw*0.5)/(vw*0.5),-0.36,0.36);
   const normY=clamp((desiredY-vh*0.5)/(vh*0.5),-0.38,0.3);
   const dist=camDist||targetDist||SHIPS_META[currentShipIdx]?.dist||38;
   desiredLookTarget.set(-normX*dist*0.5,normY*dist*0.34,0);
 }
-function setFrameMode(mode,btn){
-  cameraFrameMode=mode;
-  document.querySelectorAll('[data-frame]').forEach(b=>b.classList.toggle('active',b===btn));
-  try{localStorage.setItem('shippos-frame-mode',mode);}catch(e){}
-  updateLayoutLookTarget();
+function setPaintMode(mode,btn){
+  paintMode=mode;
+  try{localStorage.setItem('shippos-paint-mode',String(mode));}catch(e){}
+  applyPaintTheme();
+  if(btn) document.querySelectorAll('[data-paint]').forEach(b=>b.classList.toggle('active',b===btn));
 }
 function M(color, opts={}){
   return new THREE.MeshStandardMaterial({
@@ -1517,10 +1655,13 @@ function init(){
   sg.setAttribute('position',new THREE.BufferAttribute(sp,3));
   scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xffffff,size:0.12,sizeAttenuation:true,transparent:true,opacity:0.8})));
   try{
-    const savedFrameMode=localStorage.getItem('shippos-frame-mode');
-    if(savedFrameMode&&['auto','horizontal','vertical'].includes(savedFrameMode)) cameraFrameMode=savedFrameMode;
+    const savedPaintMode=localStorage.getItem('shippos-paint-mode');
+    if(savedPaintMode!==null) paintMode=Math.max(0,Math.min(2,parseInt(savedPaintMode,10)||0));
+    invertHorizontal=localStorage.getItem('shippos-invert-horizontal')==='1';
+    invertVertical=localStorage.getItem('shippos-invert-vertical')==='1';
   }catch(e){}
-  document.querySelectorAll('[data-frame]').forEach(b=>b.classList.toggle('active',b.dataset.frame===cameraFrameMode));
+  syncInvertButtons();
+  document.querySelectorAll('[data-paint]').forEach(b=>b.classList.toggle('active',Number(b.dataset.paint)===paintMode));
   ships=[buildPathfinder(),buildIronworks(),buildTessera(),buildOutrider(),buildMule()];
   ships.forEach(sh=>{sh.visible=false;scene.add(sh);});
   selectShip(0);
@@ -1528,11 +1669,11 @@ function init(){
   clock=new THREE.Clock();
   const c=document.getElementById('canvas');
   c.addEventListener('mousedown',e=>{isDragging=true;autoOrbit=false;lastM.x=e.clientX;lastM.y=e.clientY;});
-  c.addEventListener('mousemove',e=>{if(!isDragging)return;camTheta+=(e.clientX-lastM.x)*0.005;camPhi=Math.max(0.01,Math.min(2*Math.PI-0.01,camPhi-(e.clientY-lastM.y)*0.005));lastM.x=e.clientX;lastM.y=e.clientY;});
+  c.addEventListener('mousemove',e=>{if(!isDragging)return;camTheta+=(e.clientX-lastM.x)*0.005*(invertHorizontal?-1:1);camPhi=Math.max(0.01,Math.min(2*Math.PI-0.01,camPhi-(e.clientY-lastM.y)*0.005*(invertVertical?-1:1)));lastM.x=e.clientX;lastM.y=e.clientY;});
   c.addEventListener('mouseup',()=>isDragging=false);
   c.addEventListener('wheel',e=>{targetDist=Math.max(8,Math.min(90,targetDist+e.deltaY*0.025));});
   c.addEventListener('touchstart',e=>{e.preventDefault();isDragging=true;autoOrbit=false;lastM.x=e.touches[0].clientX;lastM.y=e.touches[0].clientY;},{passive:false});
-  c.addEventListener('touchmove',e=>{e.preventDefault();if(e.touches.length===1&&isDragging){camTheta+=(e.touches[0].clientX-lastM.x)*0.005;camPhi=Math.max(0.01,Math.min(2*Math.PI-0.01,camPhi-(e.touches[0].clientY-lastM.y)*0.005));lastM.x=e.touches[0].clientX;lastM.y=e.touches[0].clientY;}else if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(lastPinch)targetDist=Math.max(8,Math.min(90,targetDist+(lastPinch-d)*0.05));lastPinch=d;}},{passive:false});
+  c.addEventListener('touchmove',e=>{e.preventDefault();if(e.touches.length===1&&isDragging){camTheta+=(e.touches[0].clientX-lastM.x)*0.005*(invertHorizontal?-1:1);camPhi=Math.max(0.01,Math.min(2*Math.PI-0.01,camPhi-(e.touches[0].clientY-lastM.y)*0.005*(invertVertical?-1:1)));lastM.x=e.touches[0].clientX;lastM.y=e.touches[0].clientY;}else if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(lastPinch)targetDist=Math.max(8,Math.min(90,targetDist+(lastPinch-d)*0.05));lastPinch=d;}},{passive:false});
   c.addEventListener('touchend',()=>{isDragging=false;lastPinch=null;});
   window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);updateLayoutLookTarget();});
   animate();
@@ -1557,6 +1698,7 @@ function selectShip(idx){
   document.getElementById('desc-text').textContent=m.desc;
   document.querySelectorAll('.stat-row span').forEach(sp=>sp.style.color=m.accentCSS);
   if(isWire)currentShipGroup.traverse(c=>{if(c.isMesh&&c.material)c.material.wireframe=true;});
+  applyPaintTheme();
   let tc=0;currentShipGroup.traverse(c=>{if(c.visible&&c.isMesh&&c.geometry)tc+=(c.geometry.index?c.geometry.index.count/3:c.geometry.attributes.position.count/3);});
   document.getElementById('s-tris').textContent=Math.round(tc).toLocaleString();
   document.getElementById('mule-variants').style.display=idx===4?'flex':'none';
