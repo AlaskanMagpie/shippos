@@ -1243,11 +1243,11 @@ function init(){
   clock=new THREE.Clock();
   const c=document.getElementById('canvas');
   c.addEventListener('mousedown',e=>{isDragging=true;autoOrbit=false;lastM.x=e.clientX;lastM.y=e.clientY;});
-  c.addEventListener('mousemove',e=>{if(!isDragging)return;camTheta-=(e.clientX-lastM.x)*0.005;camPhi=Math.max(0.01,Math.min(Math.PI/2-0.01,camPhi+(e.clientY-lastM.y)*0.005));lastM.x=e.clientX;lastM.y=e.clientY;});
+  c.addEventListener('mousemove',e=>{if(!isDragging)return;camTheta+=(e.clientX-lastM.x)*0.005;camPhi=Math.max(0.01,Math.min(Math.PI-0.01,camPhi-(e.clientY-lastM.y)*0.005));lastM.x=e.clientX;lastM.y=e.clientY;});
   c.addEventListener('mouseup',()=>isDragging=false);
   c.addEventListener('wheel',e=>{targetDist=Math.max(8,Math.min(90,targetDist+e.deltaY*0.025));});
   c.addEventListener('touchstart',e=>{e.preventDefault();isDragging=true;autoOrbit=false;lastM.x=e.touches[0].clientX;lastM.y=e.touches[0].clientY;},{passive:false});
-  c.addEventListener('touchmove',e=>{e.preventDefault();if(e.touches.length===1&&isDragging){camTheta-=(e.touches[0].clientX-lastM.x)*0.005;camPhi=Math.max(0.01,Math.min(Math.PI/2-0.01,camPhi+(e.touches[0].clientY-lastM.y)*0.005));lastM.x=e.touches[0].clientX;lastM.y=e.touches[0].clientY;}else if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(lastPinch)targetDist=Math.max(8,Math.min(90,targetDist+(lastPinch-d)*0.05));lastPinch=d;}},{passive:false});
+  c.addEventListener('touchmove',e=>{e.preventDefault();if(e.touches.length===1&&isDragging){camTheta+=(e.touches[0].clientX-lastM.x)*0.005;camPhi=Math.max(0.01,Math.min(Math.PI-0.01,camPhi-(e.touches[0].clientY-lastM.y)*0.005));lastM.x=e.touches[0].clientX;lastM.y=e.touches[0].clientY;}else if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(lastPinch)targetDist=Math.max(8,Math.min(90,targetDist+(lastPinch-d)*0.05));lastPinch=d;}},{passive:false});
   c.addEventListener('touchend',()=>{isDragging=false;lastPinch=null;});
   window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
   animate();
@@ -1311,7 +1311,7 @@ function animate(){
   requestAnimationFrame(animate);const t=clock.getElapsedTime();
   const dt=clock.getDelta();
   if(autoOrbit&&!isDragging){
-    camTheta+=0.0008;
+    camTheta-=0.0008;
   }
   camDist+=(targetDist-camDist)*0.06;
   camera.position.set(Math.cos(camTheta)*Math.cos(camPhi)*camDist,Math.sin(camPhi)*camDist,Math.sin(camTheta)*Math.cos(camPhi)*camDist);
