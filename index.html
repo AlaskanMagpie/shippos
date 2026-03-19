@@ -45,6 +45,7 @@
     backdrop-filter: blur(12px);
     position: relative;
     overflow: hidden;
+    border-radius: 14px;
   }
   
   .ship-card::before {
@@ -60,12 +61,14 @@
   .ship-card:hover {
     background: rgba(12,24,36,0.85);
     border-color: rgba(255,255,255,0.1);
+    transform: translateX(4px);
   }
   
   .ship-card.active {
     background: rgba(12,24,36,0.9);
     border-color: var(--accent);
     box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.08);
+    transform: translateX(8px) scale(1.015);
   }
   
   .ship-card.active::before { opacity: 1; }
@@ -77,8 +80,9 @@
     color: rgba(128,224,96,0.4);
     font-family: 'JetBrains Mono', monospace;
     font-size: 8px; letter-spacing: 1px;
-    padding: 5px 0; cursor: pointer;
+    padding: 6px 0; cursor: pointer;
     transition: all 0.3s;
+    border-radius: 10px;
   }
   .mvar:hover { background: rgba(128,224,96,0.06); color: rgba(128,224,96,0.7); }
   .mvar.active {
@@ -1681,6 +1685,8 @@ function selectShip(idx){
   const m=SHIPS_META[idx];
   targetDist=getResponsiveDistance(m.dist);
   document.querySelectorAll('.ship-card').forEach((c,i)=>c.classList.toggle('active',i===idx));
+  document.documentElement.style.setProperty('--ui-accent', m.accentCSS);
+  document.documentElement.style.setProperty('--ui-accent-rgb', `${(m.accent>>16)&255},${(m.accent>>8)&255},${m.accent&255}`);
   document.getElementById('vessel-title').textContent=m.name;
   document.getElementById('vessel-title').style.color=m.accentCSS;
   document.getElementById('vessel-subtitle').textContent=m.subtitle;
