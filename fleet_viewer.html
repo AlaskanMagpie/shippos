@@ -181,6 +181,41 @@
   
   .v-btn:hover { border-color: rgba(255,255,255,0.2); color: #8aaa; }
   .v-btn.active { border-color: var(--accent); color: var(--accent); }
+
+  #credits-notice {
+    position: fixed;
+    right: 20px;
+    bottom: 70px;
+    max-width: 260px;
+    padding: 10px 28px 10px 12px;
+    background: rgba(8,16,24,0.85);
+    border: 1px solid rgba(255,255,255,0.06);
+    font-size: 9px;
+    line-height: 1.45;
+    letter-spacing: 0.5px;
+    color: #5a7080;
+    z-index: 18;
+    backdrop-filter: blur(10px);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  #credits-notice.hidden { opacity: 0; pointer-events: none; transform: translateY(4px); }
+  #credits-notice a { color: #6a90a0; text-decoration: none; }
+  #credits-notice a:hover { color: #8ab0c0; text-decoration: underline; }
+  #credits-notice .close-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: #4a6070;
+    font: 14px/1 monospace;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  #credits-notice .close-btn:hover { color: #7a90a0; background: rgba(255,255,255,0.06); }
 </style>
 </head>
 <body>
@@ -235,6 +270,11 @@
   </div>
 </div>
 
+<div id="credits-notice">
+  <button class="close-btn" onclick="document.getElementById('credits-notice').classList.add('hidden'); try{sessionStorage.setItem('shippos-credits-closed','1');}catch(e){}" aria-label="Close">×</button>
+  These ships are for a game I'm making. Like them? Download the GLB below and tag me in your build on X! Your own ship uploads and a builder are being looked into.
+</div>
+
 <div id="info-bar">
   <div id="desc-text">Multi-role vessel optimized for extended deep-space operations. Combines exploration, scientific research, and field construction capabilities in a single hull.</div>
   <div id="view-controls">
@@ -249,6 +289,8 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>try{ if(sessionStorage.getItem('shippos-credits-closed')) document.getElementById('credits-notice').classList.add('hidden'); }catch(e){}
+</script>
 <script>let scene, camera, renderer, clock;
 let currentShipGroup = null;
 let ships = [];
