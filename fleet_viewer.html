@@ -216,6 +216,191 @@
     border-radius: 2px;
   }
   #credits-notice .close-btn:hover { color: #7a90a0; background: rgba(255,255,255,0.06); }
+
+  @media (max-width: 900px) {
+    #hud-top {
+      padding-left: 200px;
+      padding-right: 24px;
+    }
+
+    #info-bar {
+      padding-left: 200px;
+      padding-right: 20px;
+    }
+
+    #desc-text {
+      max-width: 360px;
+    }
+
+    .ship-card,
+    #mule-variants {
+      width: 168px !important;
+    }
+  }
+
+  @media (max-width: 700px), (orientation: portrait) {
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    #ship-selector {
+      left: 12px;
+      right: 12px;
+      top: auto;
+      bottom: calc(130px + env(safe-area-inset-bottom, 0px));
+      transform: none;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      max-height: min(48vh, 420px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 4px;
+      scrollbar-width: thin;
+    }
+
+    .ship-card,
+    #mule-variants {
+      width: 100% !important;
+      max-width: min(100%, 420px);
+    }
+
+    .ship-card {
+      padding: 12px 14px;
+      background: rgba(8,16,24,0.88);
+    }
+
+    .ship-card .class-name {
+      font-size: 12px;
+      letter-spacing: 1.8px;
+    }
+
+    .ship-card .ship-name,
+    .ship-card .ship-role {
+      font-size: 8.5px;
+    }
+
+    #mule-variants {
+      gap: 4px;
+      margin-top: -2px;
+    }
+
+    .mvar {
+      min-height: 30px;
+    }
+
+    #hud-top {
+      left: 12px;
+      right: 12px;
+      top: calc(10px + env(safe-area-inset-top, 0px));
+      padding: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 12px;
+    }
+
+    #vessel-title {
+      font-size: clamp(18px, 6.5vw, 28px);
+      letter-spacing: clamp(3px, 1.6vw, 6px);
+      line-height: 1;
+      max-width: 100%;
+      word-break: break-word;
+    }
+
+    #vessel-subtitle {
+      font-size: 8.5px;
+      letter-spacing: 1.4px;
+      line-height: 1.45;
+      max-width: min(58vw, 240px);
+    }
+
+    #stats-panel {
+      min-width: 92px;
+      padding-top: 2px;
+      text-align: right;
+    }
+
+    .stat-row {
+      font-size: 8px;
+      letter-spacing: 0.9px;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    #info-bar {
+      left: 12px;
+      right: 12px;
+      bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+      padding: 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-top-width: 1px;
+      background: rgba(4,8,16,0.82);
+    }
+
+    #desc-text {
+      max-width: none;
+      font-size: 9px;
+      line-height: 1.55;
+    }
+
+    #view-controls {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      width: 100%;
+    }
+
+    .v-btn {
+      min-height: 34px;
+      padding: 6px 8px;
+      font-size: 8px;
+      letter-spacing: 0.8px;
+    }
+
+    #credits-notice {
+      left: 12px;
+      right: 12px;
+      bottom: calc(102px + env(safe-area-inset-bottom, 0px));
+      max-width: none;
+      padding-right: 30px;
+      font-size: 8.5px;
+      line-height: 1.5;
+    }
+  }
+
+  @media (max-width: 420px), (orientation: portrait) and (max-width: 520px) {
+    #ship-selector {
+      bottom: calc(144px + env(safe-area-inset-bottom, 0px));
+      max-height: min(44vh, 360px);
+    }
+
+    #hud-top {
+      grid-template-columns: minmax(0, 1fr) 88px;
+      gap: 10px;
+    }
+
+    #vessel-subtitle {
+      max-width: min(54vw, 180px);
+    }
+
+    #stats-panel {
+      min-width: 88px;
+    }
+
+    #view-controls {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #credits-notice {
+      bottom: calc(118px + env(safe-area-inset-bottom, 0px));
+    }
+  }
 </style>
 </head>
 <body>
