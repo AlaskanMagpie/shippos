@@ -6,6 +6,10 @@
 <title>Fleet Viewer — Ship Concepts</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap');
+  :root {
+    --ui-accent: #4af0c0;
+    --ui-accent-rgb: 74,240,192;
+  }
   
   * { margin: 0; padding: 0; box-sizing: border-box; }
   
@@ -150,26 +154,59 @@
   #info-bar {
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    padding: 14px 240px;
-    background: rgba(4,8,16,0.7);
-    border-top: 1px solid rgba(255,255,255,0.04);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 14px 22px 16px 240px;
+    background: linear-gradient(180deg, rgba(4,8,16,0.55), rgba(4,8,16,0.88));
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: grid;
+    grid-template-columns: minmax(200px, 320px) minmax(300px, 1fr) minmax(210px, 260px);
+    gap: 14px;
+    align-items: end;
     z-index: 15;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
   }
   
+  #desc-text,
+  #control-groups,
+  #credits-notice {
+    background: rgba(8,16,24,0.72);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+
   #desc-text {
     font-size: 10px;
     color: #4a6a7a;
-    max-width: 500px;
     line-height: 1.5;
     letter-spacing: 0.5px;
     transition: all 0.5s;
+    padding: 12px 14px;
   }
-  
-  #view-controls { display: flex; gap: 6px; }
+
+  #control-groups {
+    display: grid;
+    gap: 8px;
+    padding: 12px 14px;
+  }
+
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .control-label {
+    width: 44px;
+    flex: 0 0 44px;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    color: #526a78;
+  }
+
+  #view-controls,
+  #frame-controls,
+  #tool-controls { display: flex; gap: 6px; flex-wrap: wrap; }
   
   .v-btn {
     background: rgba(255,255,255,0.03);
@@ -178,45 +215,36 @@
     font-family: 'Space Mono', monospace;
     font-size: 9px;
     letter-spacing: 1px;
-    padding: 8px 14px;
+    padding: 7px 14px;
     min-height: 34px;
     cursor: pointer;
-    transition: transform 0.24s ease, border-color 0.24s ease, color 0.24s ease, background 0.24s ease, box-shadow 0.24s ease;
+    transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
     border-radius: 999px;
   }
   
-  .v-btn:hover {
-    border-color: rgba(255,255,255,0.2);
-    color: #8aaa;
-    transform: translateY(-1px);
-    box-shadow: 0 10px 24px rgba(0,0,0,0.22);
-  }
-  .v-btn.active {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(var(--accent-rgb), 0.08);
-    box-shadow: 0 0 22px rgba(var(--accent-rgb), 0.14);
-  }
+  .v-btn:hover { border-color: rgba(255,255,255,0.2); color: #8aaa; transform: translateY(-1px); }
+  .v-btn.active { border-color: var(--ui-accent); color: var(--ui-accent); background: rgba(var(--ui-accent-rgb),0.08); }
 
   #credits-notice {
-    position: fixed;
-    right: 20px;
-    bottom: 70px;
-    max-width: 260px;
-    padding: 10px 28px 10px 12px;
-    background: rgba(8,16,24,0.85);
-    border: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    max-width: none;
+    padding: 12px 30px 12px 14px;
     font-size: 9px;
     line-height: 1.45;
     letter-spacing: 0.5px;
     color: #5a7080;
-    z-index: 18;
-    backdrop-filter: blur(10px);
     transition: opacity 0.25s, transform 0.25s;
   }
-  #credits-notice.hidden { opacity: 0; pointer-events: none; transform: translateY(4px); }
+  #credits-notice.hidden { display: none; }
   #credits-notice a { color: #6a90a0; text-decoration: none; }
   #credits-notice a:hover { color: #8ab0c0; text-decoration: underline; }
+  #credits-notice .notice-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 8px;
+    letter-spacing: 1.6px;
+    color: #647d8c;
+  }
   #credits-notice .close-btn {
     position: absolute;
     top: 6px;
@@ -233,207 +261,124 @@
   }
   #credits-notice .close-btn:hover { color: #7a90a0; background: rgba(255,255,255,0.06); }
 
-  @media (max-width: 1080px) {
+  @media (max-width: 1180px), (max-height: 760px) {
     #ship-selector {
-      left: 18px;
-    }
-
-    .ship-card,
-    #mule-variants {
-      width: 180px !important;
-    }
-
-    #hud-top {
-      padding: 18px 190px 18px 216px;
-    }
-
-    #info-bar {
-      padding: 14px 20px 14px 216px;
-      gap: 16px;
-    }
-
-    #desc-text {
-      max-width: 420px;
-      font-size: 9px;
-    }
-  }
-
-  @media (max-width: 760px), (orientation: portrait) {
-    body {
-      min-height: 100vh;
-      min-height: 100dvh;
-    }
-
-    #ship-selector {
-      left: 12px;
-      right: 12px;
-      top: auto;
-      bottom: calc(128px + env(safe-area-inset-bottom, 0px));
+      top: calc(78px + env(safe-area-inset-top, 0px));
+      left: 14px;
+      right: 14px;
       transform: none;
       flex-direction: row;
       gap: 8px;
       overflow-x: auto;
       overflow-y: hidden;
-      padding: 2px 4px 4px 0;
-      scrollbar-width: thin;
+      padding-bottom: 4px;
       -webkit-overflow-scrolling: touch;
-      scroll-snap-type: x proximity;
+      scrollbar-width: thin;
     }
 
     .ship-card,
     #mule-variants {
-      width: min(42vw, 164px) !important;
-      min-width: min(42vw, 164px);
+      width: min(180px, 34vw) !important;
+      min-width: min(180px, 34vw);
       flex: 0 0 auto;
-      scroll-snap-align: start;
-    }
-
-    .ship-card {
-      padding: 10px 12px;
-      min-height: 96px;
-      background: rgba(8,16,24,0.88);
-      border-radius: 16px;
-    }
-
-    .ship-card:hover,
-    .ship-card.active {
-      transform: translateY(-2px);
-    }
-
-    .ship-card .class-name {
-      font-size: 11px;
-      letter-spacing: 1.7px;
-    }
-
-    .ship-card .ship-name {
-      font-size: 8px;
-      letter-spacing: 1.1px;
-      margin-bottom: 4px;
-    }
-
-    .ship-card .ship-role {
-      font-size: 8px;
-      line-height: 1.3;
-    }
-
-    #mule-variants {
-      display: none;
-      gap: 4px;
-      margin-top: 0 !important;
-      align-self: stretch;
-    }
-
-    .mvar {
-      min-height: 28px;
-      font-size: 7px;
-      letter-spacing: 0.9px;
     }
 
     #hud-top {
-      top: calc(10px + env(safe-area-inset-top, 0px));
-      left: 12px;
-      right: 12px;
-      padding: 0;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: start;
-      gap: 10px;
-    }
-
-    #vessel-title {
-      font-size: clamp(16px, 6.2vw, 24px);
-      letter-spacing: clamp(2px, 1.4vw, 5px);
-      line-height: 1;
-    }
-
-    #vessel-subtitle {
-      font-size: 8px;
-      letter-spacing: 1.2px;
-      line-height: 1.35;
-      max-width: 52vw;
-    }
-
-    #stats-panel {
-      min-width: 92px;
-      padding: 8px 10px;
-      background: rgba(6,12,18,0.62);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 14px;
-      backdrop-filter: blur(10px);
-    }
-
-    .stat-row {
-      font-size: 7px;
-      letter-spacing: 0.8px;
-      margin-bottom: 2px;
+      padding: calc(14px + env(safe-area-inset-top, 0px)) 14px 0;
+      gap: 14px;
     }
 
     #info-bar {
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
-      display: grid;
+      padding: 12px 14px calc(14px + env(safe-area-inset-bottom, 0px));
       grid-template-columns: 1fr;
-      gap: 10px;
       align-items: stretch;
-      background: linear-gradient(180deg, rgba(4,8,16,0.72), rgba(4,8,16,0.92));
+      gap: 10px;
     }
 
     #desc-text {
-      max-width: none;
-      font-size: 8px;
-      line-height: 1.45;
-      letter-spacing: 0.35px;
-      padding-right: 4px;
+      font-size: 9px;
     }
 
-    #view-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .control-group {
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .control-label {
+      width: auto;
+      flex: none;
+      padding-top: 10px;
+    }
+
+    #view-controls,
+    #frame-controls,
+    #tool-controls {
       justify-content: center;
     }
 
-    .v-btn {
-      flex: 1 1 calc(33.333% - 8px);
-      min-width: 78px;
-      padding: 10px 12px;
-      min-height: 38px;
-      font-size: 8px;
-      letter-spacing: 0.8px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-    }
-
     #credits-notice {
-      left: 12px;
-      right: 12px;
-      bottom: calc(204px + env(safe-area-inset-bottom, 0px));
-      max-width: none;
-      padding: 10px 26px 10px 12px;
       font-size: 8px;
-      line-height: 1.35;
+      line-height: 1.4;
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px), (orientation: portrait) {
     #ship-selector {
-      bottom: calc(122px + env(safe-area-inset-bottom, 0px));
+      top: calc(90px + env(safe-area-inset-top, 0px));
+      left: 12px;
+      right: 12px;
+      gap: 6px;
     }
 
     .ship-card,
     #mule-variants {
-      width: min(46vw, 148px) !important;
-      min-width: min(46vw, 148px);
+      width: min(168px, 44vw) !important;
+      min-width: min(168px, 44vw);
+    }
+
+    .ship-card .class-name { font-size: 11px; letter-spacing: 1.6px; }
+    .ship-card .ship-name,
+    .ship-card .ship-role { font-size: 8px; line-height: 1.3; }
+
+    #hud-top {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    #vessel-title { font-size: clamp(16px, 6vw, 22px); letter-spacing: clamp(2px, 1.3vw, 5px); }
+    #vessel-subtitle { font-size: 8px; max-width: 48vw; }
+    .stat-row { font-size: 7px; letter-spacing: 0.8px; }
+
+    .control-group {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+
+    .control-label {
+      padding-top: 0;
+    }
+
+    #view-controls {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #frame-controls,
+    #tool-controls {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .v-btn {
-      flex-basis: calc(50% - 8px);
+      width: 100%;
       min-width: 0;
+      padding: 9px 10px;
+      font-size: 8px;
     }
 
-    #credits-notice {
-      bottom: calc(228px + env(safe-area-inset-bottom, 0px));
+    #desc-text {
+      display: none;
     }
   }
 </style>
@@ -490,24 +435,39 @@
   </div>
 </div>
 
-<div id="credits-notice">
-  <button class="close-btn" onclick="document.getElementById('credits-notice').classList.add('hidden'); try{sessionStorage.setItem('shippos-credits-closed','1');}catch(e){}" aria-label="Close">×</button>
-  These ships are for a game I'm making. Like them? Download the GLB below and tag me in your build on X! Your own ship uploads and a builder are being looked into.
-</div>
-
 <div id="info-bar">
   <div id="desc-text">Multi-role vessel optimized for extended deep-space operations. Combines exploration, scientific research, and field construction capabilities in a single hull.</div>
-  <div id="view-controls">
-    <button class="v-btn active" data-view="orbit" onclick="setView('orbit',this)">ORBIT</button>
-    <button class="v-btn" data-view="fore" onclick="setView('fore',this)">FORE</button>
-    <button class="v-btn" data-view="port" onclick="setView('port',this)">PORT</button>
-    <button class="v-btn" data-view="dorsal" onclick="setView('dorsal',this)">DORSAL</button>
-    <button class="v-btn" data-view="aft" onclick="setView('aft',this)">AFT</button>
-    <button class="v-btn active" data-frame="auto" onclick="setFrameMode('auto',this)">FRAME AUTO</button>
-    <button class="v-btn" data-frame="horizontal" onclick="setFrameMode('horizontal',this)">FRAME H</button>
-    <button class="v-btn" data-frame="vertical" onclick="setFrameMode('vertical',this)">FRAME V</button>
-    <button class="v-btn" onclick="toggleWire(this)">WIRE</button>
-    <button class="v-btn" onclick="exportGLB()">GLB ↓</button>
+  <div id="control-groups">
+    <div class="control-group">
+      <div class="control-label">VIEW</div>
+      <div id="view-controls">
+        <button class="v-btn active" data-view="orbit" onclick="setView('orbit',this)">ORBIT</button>
+        <button class="v-btn" data-view="fore" onclick="setView('fore',this)">FORE</button>
+        <button class="v-btn" data-view="port" onclick="setView('port',this)">PORT</button>
+        <button class="v-btn" data-view="dorsal" onclick="setView('dorsal',this)">DORSAL</button>
+        <button class="v-btn" data-view="aft" onclick="setView('aft',this)">AFT</button>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="control-label">FRAME</div>
+      <div id="frame-controls">
+        <button class="v-btn active" data-frame="auto" onclick="setFrameMode('auto',this)">AUTO</button>
+        <button class="v-btn" data-frame="horizontal" onclick="setFrameMode('horizontal',this)">H-FRAME</button>
+        <button class="v-btn" data-frame="vertical" onclick="setFrameMode('vertical',this)">V-FRAME</button>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="control-label">TOOLS</div>
+      <div id="tool-controls">
+        <button class="v-btn" onclick="toggleWire(this)">WIRE</button>
+        <button class="v-btn" onclick="exportGLB()">GLB ↓</button>
+      </div>
+    </div>
+  </div>
+  <div id="credits-notice">
+    <button class="close-btn" onclick="dismissCreditsNotice()" aria-label="Close">×</button>
+    <span class="notice-label">PROJECT NOTE</span>
+    These ships are for a game I'm making. Like them? Download the GLB below and tag me in your build on X! Your own ship uploads and a builder are being looked into.
   </div>
 </div>
 
@@ -550,49 +510,49 @@ const SHIPS_META = [
     desc:'Autonomous freighter in 3 variants. SPRINT: fast 2x3 short-body courier. LONGHAULER: extended spine with 4x4 container stack. TANKER: cylindrical fuel/gas tanks for bulk liquid transport. All optimized for mass instancing.', dist:22 },
 ];
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
-function isCompactLayout(){return window.matchMedia('(max-width: 760px), (orientation: portrait)').matches;}
+function isCompactLayout(){return window.matchMedia('(max-width: 640px), (orientation: portrait)').matches;}
+function isTopStripLayout(){return window.matchMedia('(max-width: 1180px), (max-height: 760px)').matches;}
 function getResponsiveDistance(dist){
-  if(isCompactLayout()) return dist*0.84;
-  if(window.innerWidth<1080) return dist*0.94;
+  if(isCompactLayout()) return dist*0.82;
+  if(isTopStripLayout()) return dist*0.9;
   return dist;
+}
+function dismissCreditsNotice(){
+  const notice=document.getElementById('credits-notice');
+  notice.classList.add('hidden');
+  try{sessionStorage.setItem('shippos-credits-closed','1');}catch(e){}
+  updateLayoutLookTarget();
 }
 function updateLayoutLookTarget(){
   if(!camera)return;
   const vw=window.innerWidth||1, vh=window.innerHeight||1;
-  const selector=document.getElementById('ship-selector');
-  const hud=document.getElementById('hud-top');
-  const info=document.getElementById('info-bar');
-  const stats=document.getElementById('stats-panel');
-  const compact=isCompactLayout();
+  const hudRect=document.getElementById('hud-top').getBoundingClientRect();
+  const selectorRect=document.getElementById('ship-selector').getBoundingClientRect();
+  const statsRect=document.getElementById('stats-panel').getBoundingClientRect();
+  const infoRect=document.getElementById('info-bar').getBoundingClientRect();
   let desiredX=vw*0.5;
   let desiredY=vh*0.5;
 
-  if(compact){
-    const hudRect=hud.getBoundingClientRect();
-    const selectorRect=selector.getBoundingClientRect();
-    const infoRect=info.getBoundingClientRect();
-    const topBound=Math.max(0,hudRect.bottom+18);
-    const bottomBound=Math.min(selectorRect.top,infoRect.top)-18;
-    desiredY=bottomBound>topBound?(topBound+bottomBound)*0.5:vh*0.38;
+  if(isTopStripLayout()){
+    const topBound=Math.max(hudRect.bottom,selectorRect.bottom)+16;
+    const bottomBound=infoRect.top-18;
+    desiredY=bottomBound>topBound?(topBound+bottomBound)*0.5:vh*0.42;
   }else{
-    const selectorRect=selector.getBoundingClientRect();
-    const statsRect=stats.getBoundingClientRect();
-    const leftBound=selectorRect.right+28;
+    const leftBound=selectorRect.right+24;
     const rightBound=statsRect.left-20;
+    const topBound=hudRect.bottom+18;
+    const bottomBound=infoRect.top-20;
     desiredX=rightBound>leftBound?(leftBound+rightBound)*0.5:vw*0.58;
-    desiredY=vh*0.54;
+    desiredY=bottomBound>topBound?(topBound+bottomBound)*0.5:vh*0.54;
   }
 
-  if(cameraFrameMode==='horizontal'){
-    desiredY=vh*0.5;
-  }else if(cameraFrameMode==='vertical'){
-    desiredX=vw*0.5;
-  }
+  if(cameraFrameMode==='horizontal') desiredY=vh*0.5;
+  if(cameraFrameMode==='vertical') desiredX=vw*0.5;
 
   const normX=clamp((desiredX-vw*0.5)/(vw*0.5),-0.36,0.36);
   const normY=clamp((desiredY-vh*0.5)/(vh*0.5),-0.38,0.3);
   const dist=camDist||targetDist||SHIPS_META[currentShipIdx]?.dist||38;
-  desiredLookTarget.set(-normX*dist*0.52,normY*dist*0.34,0);
+  desiredLookTarget.set(-normX*dist*0.5,normY*dist*0.34,0);
 }
 function setFrameMode(mode,btn){
   cameraFrameMode=mode;
@@ -1558,14 +1518,13 @@ function init(){
   scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xffffff,size:0.12,sizeAttenuation:true,transparent:true,opacity:0.8})));
   try{
     const savedFrameMode=localStorage.getItem('shippos-frame-mode');
-    if(savedFrameMode&&['auto','horizontal','vertical'].includes(savedFrameMode)){
-      cameraFrameMode=savedFrameMode;
-    }
+    if(savedFrameMode&&['auto','horizontal','vertical'].includes(savedFrameMode)) cameraFrameMode=savedFrameMode;
   }catch(e){}
   document.querySelectorAll('[data-frame]').forEach(b=>b.classList.toggle('active',b.dataset.frame===cameraFrameMode));
   ships=[buildPathfinder(),buildIronworks(),buildTessera(),buildOutrider(),buildMule()];
   ships.forEach(sh=>{sh.visible=false;scene.add(sh);});
   selectShip(0);
+  updateLayoutLookTarget();
   clock=new THREE.Clock();
   const c=document.getElementById('canvas');
   c.addEventListener('mousedown',e=>{isDragging=true;autoOrbit=false;lastM.x=e.clientX;lastM.y=e.clientY;});
@@ -1575,13 +1534,7 @@ function init(){
   c.addEventListener('touchstart',e=>{e.preventDefault();isDragging=true;autoOrbit=false;lastM.x=e.touches[0].clientX;lastM.y=e.touches[0].clientY;},{passive:false});
   c.addEventListener('touchmove',e=>{e.preventDefault();if(e.touches.length===1&&isDragging){camTheta+=(e.touches[0].clientX-lastM.x)*0.005;camPhi=Math.max(0.01,Math.min(2*Math.PI-0.01,camPhi-(e.touches[0].clientY-lastM.y)*0.005));lastM.x=e.touches[0].clientX;lastM.y=e.touches[0].clientY;}else if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(lastPinch)targetDist=Math.max(8,Math.min(90,targetDist+(lastPinch-d)*0.05));lastPinch=d;}},{passive:false});
   c.addEventListener('touchend',()=>{isDragging=false;lastPinch=null;});
-  window.addEventListener('resize',()=>{
-    camera.aspect=window.innerWidth/window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth,window.innerHeight);
-    updateLayoutLookTarget();
-  });
-  updateLayoutLookTarget();
+  window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);updateLayoutLookTarget();});
   animate();
 }
 function selectShip(idx){
@@ -1591,6 +1544,8 @@ function selectShip(idx){
   const m=SHIPS_META[idx];
   targetDist=getResponsiveDistance(m.dist);
   document.querySelectorAll('.ship-card').forEach((c,i)=>c.classList.toggle('active',i===idx));
+  document.documentElement.style.setProperty('--ui-accent', m.accentCSS);
+  document.documentElement.style.setProperty('--ui-accent-rgb', `${(m.accent>>16)&255},${(m.accent>>8)&255},${m.accent&255}`);
   document.getElementById('vessel-title').textContent=m.name;
   document.getElementById('vessel-title').style.color=m.accentCSS;
   document.getElementById('vessel-subtitle').textContent=m.subtitle;
